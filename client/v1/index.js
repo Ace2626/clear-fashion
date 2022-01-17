@@ -1,7 +1,7 @@
 // Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
-
 console.log('🚀 This is it.');
+
 
 const MY_FAVORITE_BRANDS = [{
   'name': 'Hopaal',
@@ -24,7 +24,6 @@ console.log(MY_FAVORITE_BRANDS[0]);
  * Let's go with a very very simple first todo
  * Keep pushing
  * 🌱
- */
 
 // 🎯 TODO: The cheapest t-shirt
 // 0. I have 3 favorite brands stored in MY_FAVORITE_BRANDS variable
@@ -49,11 +48,24 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 1. Create a variable and assign it the number of products
 // 2. Log the variable
 
+var nb_product=marketplace.length;
+console.log(nb_product)
+
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
 // 2. Log the variable
 // 3. Log how many brands we have
+
+var listBrand=[]
+marketplace.forEach(element => {
+  if(!listBrand.includes(element.brand))
+  {
+    listBrand.push(element.brand)
+  }
+});
+console.log(listBrand)
+console.log(listBrand.length)
 
 
 // 🎯 TODO: Sort by price
@@ -61,16 +73,29 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
 
+var ProdSortByPrice =marketplace.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+console.log(ProdSortByPrice);
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
-
+var ProdSortByDate =marketplace.slice().sort((a, b) =>b.date -a.date);
+console.log(ProdSortByDate);
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
 // 2. Log the list
+
+var listBrandSpec=[]
+marketplace.forEach(element => {
+  if(element.price<100&&element.price>50)
+  {
+    listBrand.push(element)
+  }
+});
+console.log(listBrandSpec)
+console.log(listBrandSpec.length)
 
 
 // 🎯 TODO: Average Basket
