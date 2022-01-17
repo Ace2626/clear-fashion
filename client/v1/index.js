@@ -91,7 +91,7 @@ var listBrandSpec=[]
 marketplace.forEach(element => {
   if(element.price<100&&element.price>50)
   {
-    listBrand.push(element)
+    listBrandSpec.push(element)
   }
 });
 console.log(listBrandSpec)
@@ -101,9 +101,12 @@ console.log(listBrandSpec.length)
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
 // 2. Log the average
-
-
-
+var AvgBasket=0
+marketplace.forEach(element => {
+  AvgBasket+=element.price
+});
+AvgBasket/=marketplace.length
+console.log(AvgBasket)
 
 
 /**
@@ -128,7 +131,9 @@ console.log(listBrandSpec.length)
 //
 // 2. Log the variable
 // 3. Log the number of products by brands
-
+const brands={  
+  'adresse':[{for (x of marketplace) if (x.brand=='adresse')x}],
+};
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
