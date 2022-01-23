@@ -131,19 +131,33 @@ console.log(AvgBasket)
 //
 // 2. Log the variable
 // 3. Log the number of products by brands
-const brands={  
-  'adresse':[{for (x of marketplace) if (x.brand=='adresse')x}],
-};
-
+const brands={ };
+listBrand.forEach(element => {
+  brands[element]=new Array()
+});
+marketplace.forEach(element => {
+  brands[element['brand']].push(element)
+});
+console.log(brands)
+for(let i=0; i<listBrand.length;i++)
+{
+  console.log(listBrand[i],' : ',brands[listBrand[i]].length)
+}
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
-
+for(let i=0; i<listBrand.length;i++)
+{
+  console.log(listBrand[i],' : ',brands[listBrand[i]].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)))
+}
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
-
+for(let i=0; i<listBrand.length;i++)
+{
+  console.log(listBrand[i],' : ',brands[listBrand[i]].slice().sort((a, b) =>b.date -a.date))
+}
 
 
 
@@ -158,8 +172,16 @@ const brands={
 // 🎯 TODO: Compute the p90 price value
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
-
-
+var p=0
+for(let i=0; i<listBrand.length;i++)
+{
+  for(let j=0; j<brands[listBrand[i]].length;j++)
+  {
+    p+=brands[listBrand[i]][j].price
+  }
+  p=p/brands[listBrand[i]].length
+  console.log(listBrand[i],' p90 : ',p)
+}
 
 
 
@@ -234,16 +256,32 @@ const COTELE_PARIS = [
 // 🎯 TODO: New released products
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
+var verif=true
+var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+COTELE_PARIS.forEach(element => {
+  var diff=date-element.released
+  if( diff / (1000 * 3600 * 24)>14)
+    verif=false
+});
+console.log('New product only :',verif)
 
 
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
-
+var verif=true
+COTELE_PARIS.forEach(element => {
+  if(element.price>100)
+    verif=false
+  
+});
+console.log('Reasonabe price shop :',verif)
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the product
+
 
 
 // 🎯 TODO: Delete a specific product
@@ -265,6 +303,8 @@ jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
 // 2. What do you notice?
+console.log(blueJacket)
+console.log(jacket)
 
 blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
