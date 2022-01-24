@@ -102,6 +102,12 @@ const render = (products, pagination) => {
   renderIndicators(pagination);
 };
 
+selectPage.addEventListener('change', event => {
+  fetchProducts(parseInt(event.target.value),currentPagination.pageCount)
+    .then(setCurrentProducts)
+    .then(() => render(currentProducts, currentPagination));
+});
+
 /**
  * Declaration of all Listeners
  */

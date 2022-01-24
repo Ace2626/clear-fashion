@@ -159,9 +159,7 @@ for(let i=0; i<listBrand.length;i++)
   console.log(listBrand[i],' : ',brands[listBrand[i]].slice().sort((a, b) =>b.date -a.date))
 }
 
-
-
-
+  
 /**
  * 💶
  * Let's talk about money now
