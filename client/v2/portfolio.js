@@ -10,6 +10,7 @@ const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
+const selectBrand=document.querySelector('#brand-select')
 
 /**
  * Set global value
@@ -71,6 +72,8 @@ const renderProducts = products => {
   sectionProducts.appendChild(fragment);
 };
 
+
+
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -84,6 +87,24 @@ const renderPagination = pagination => {
 
   selectPage.innerHTML = options;
   selectPage.selectedIndex = currentPage - 1;
+};
+
+//Render Brands selector
+const renderBrands=products=>{
+  var listBrand=[]
+  products.forEach(element => {
+    if(!listBrand.includes(element.brand))
+    {
+      listBrand.push(element.brand)
+    }
+  });
+  console.log(listBrand)
+  const options = Array.from(
+    {'length': listBrand.length},
+    (value, index) => `<option value="${listBrand[index]}">${listBrand[index]}</option>`
+  ).join('');
+  selectBrand.innerHTML = options;
+  selectBrand.selectedIndex=-1;
 };
 
 /**
@@ -100,13 +121,10 @@ const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
+  renderBrands(products);
 };
 
-selectPage.addEventListener('change', event => {
-  fetchProducts(parseInt(event.target.value),currentPagination.pageCount)
-    .then(setCurrentProducts)
-    .then(() => render(currentProducts, currentPagination));
-});
+
 
 /**
  * Declaration of all Listeners
@@ -120,6 +138,23 @@ selectShow.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
+});
+
+selectPage.addEventListener('change', event => {
+  fetchProducts(parseInt(event.target.value),currentPagination.pageCount)
+    .then(setCurrentProducts)
+    .then(() => render(currentProducts, currentPagination));
+});
+selectBrand.addEventListener('change', event => {
+  var listProd=[]
+  currentProducts.forEach(element => {
+    if(element.brand==event.target.value) {
+      listProd.push(element)}
+  });
+  console.log(listProd)
+  fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
+    .then(setCurrentProducts)
+    .then(() => render(listProd, currentPagination));
 });
 
 document.addEventListener('DOMContentLoaded', () =>
