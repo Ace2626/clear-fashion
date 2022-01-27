@@ -12,6 +12,7 @@ const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand=document.querySelector('#brand-select');
 const selectFilter=document.querySelector('#filter-select');
+const selectSort=document.querySelector('#sort-select');
 
 /**
  * Set global value
@@ -191,16 +192,31 @@ selectFilter.addEventListener('change', event => {
   {
     var listProdPrice=[]
     currentProducts.forEach(element => {
-      console.log(element)
       if(element.price<50)
         listProdPrice.push(element)
     });
-    console.log(listProdPrice)
   fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
     .then(setCurrentProducts)
     .then(() => render(listProdPrice, currentPagination));
   }
 }); 
+
+selectSort.addEventListener('change', event => {
+  if(event.target.value=="price-asc")
+  { 
+    var ProdSortByPriceAsc =currentProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
+      .then(setCurrentProducts)
+      .then(() => render(ProdSortByPriceAsc, currentPagination));
+  }
+  if(event.target.value=="price-desc")
+  { 
+    var ProdSortByPriceDesc =currentProducts.sort((a, b) => parseFloat(b.price)-parseFloat(a.price) );
+    fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
+      .then(setCurrentProducts)
+      .then(() => render(ProdSortByPriceDesc, currentPagination));
+  }
+});
 
 
 document.addEventListener('DOMContentLoaded', () =>
