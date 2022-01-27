@@ -104,13 +104,15 @@ const renderBrands=products=>{
     {'length': listBrand.length},
     (value, index) => `<option value="${listBrand[index]}">${listBrand[index]}</option>`
   ).join('');
+  console.log(options)
   selectBrand.innerHTML = options;
   selectBrand.selectedIndex=-1;
 };
 
 //Render Filter selector
 const renderFilter=products=>{
-  const options=[`<option value="${"Released"}">${"By reasonable released"}</option>`,`<option value="${"Price"}}">${"By reasonable price"}</option>`];
+  const options=[`<option value="${"Released"}">${"By reasonable released"}</option>`,`<option value="${"Price"}">${"By reasonable price"}</option>`];
+  console.log(options)
   selectFilter.innerHTML = options;
   selectFilter.selectedIndex=-1;
 }
@@ -185,7 +187,20 @@ selectFilter.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => render(listProdDate, currentPagination));
   }
-});
+  if(event.target.value=="Price")
+  {
+    var listProdPrice=[]
+    currentProducts.forEach(element => {
+      console.log(element)
+      if(element.price<50)
+        listProdPrice.push(element)
+    });
+    console.log(listProdPrice)
+  fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
+    .then(setCurrentProducts)
+    .then(() => render(listProdPrice, currentPagination));
+  }
+}); 
 
 
 document.addEventListener('DOMContentLoaded', () =>
