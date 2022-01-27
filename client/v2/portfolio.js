@@ -62,7 +62,7 @@ const renderProducts = products => {
       <div class="product" id=${product.uuid}>
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
-        <span>${product.price}</span>
+        <span>${product.price}</span><span>${"     "+product.released}</span>
       </div>
     `;
     })
@@ -100,12 +100,10 @@ const renderBrands=products=>{
       listBrand.push(element.brand)
     }
   });
-  console.log(listBrand)
   const options = Array.from(
     {'length': listBrand.length},
     (value, index) => `<option value="${listBrand[index]}">${listBrand[index]}</option>`
   ).join('');
-  console.log(options)
   selectBrand.innerHTML = options;
   selectBrand.selectedIndex=-1;
 };
@@ -113,7 +111,6 @@ const renderBrands=products=>{
 //Render Filter selector
 const renderFilter=products=>{
   const options=[`<option value="${"Released"}">${"By reasonable released"}</option>`,`<option value="${"Price"}">${"By reasonable price"}</option>`];
-  console.log(options)
   selectFilter.innerHTML = options;
   selectFilter.selectedIndex=-1;
 }
@@ -183,7 +180,6 @@ selectFilter.addEventListener('change', event => {
       if(((now-time)/(1000 * 3600 * 24))<14)
         listProdDate.push(element)
     });
-    console.log(listProdDate)
   fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
     .then(setCurrentProducts)
     .then(() => render(listProdDate, currentPagination));
@@ -215,6 +211,20 @@ selectSort.addEventListener('change', event => {
     fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
       .then(setCurrentProducts)
       .then(() => render(ProdSortByPriceDesc, currentPagination));
+  }
+  if(event.target.value=="date-asc")
+  { 
+      var ProdSortByDateDesc =currentProducts.slice().sort((a, b) =>new Date(b.released).getTime()- new Date(a.released).getTime());
+      fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
+        .then(setCurrentProducts)
+        .then(() => render(ProdSortByDateDesc, currentPagination));
+  }
+  if(event.target.value=="date-desc")
+  { 
+    var ProdSortByDateAsc =currentProducts.slice().sort((a, b) => new Date(a.released).getTime() -new Date(b.released).getTime());
+    fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
+      .then(setCurrentProducts)
+      .then(() => render(ProdSortByDateAsc, currentPagination));
   }
 });
 
