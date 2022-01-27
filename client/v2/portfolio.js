@@ -10,7 +10,8 @@ const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
-const selectBrand=document.querySelector('#brand-select')
+const selectBrand=document.querySelector('#brand-select');
+const selectFilter=document.querySelector('#filter-select');
 
 /**
  * Set global value
@@ -107,6 +108,15 @@ const renderBrands=products=>{
   selectBrand.selectedIndex=-1;
 };
 
+//Render Filter selector
+const renderFilter=products=>{
+  const options=[`<option value="${"Released"}">${"By reasonable released"}</option>`,`<option value="${"Price"}}">${"By reasonable price"}</option>`];
+  selectFilter.innerHTML = options;
+  selectFilter.selectedIndex=-1;
+}
+
+
+
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -122,6 +132,7 @@ const render = (products, pagination) => {
   renderPagination(pagination);
   renderIndicators(pagination);
   renderBrands(products);
+  renderFilter(products);
 };
 
 
@@ -145,17 +156,37 @@ selectPage.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
+
 selectBrand.addEventListener('change', event => {
   var listProd=[]
   currentProducts.forEach(element => {
     if(element.brand==event.target.value) {
       listProd.push(element)}
   });
-  console.log(listProd)
   fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
     .then(setCurrentProducts)
     .then(() => render(listProd, currentPagination));
 });
+
+selectFilter.addEventListener('change', event => {
+  if(event.target.value=="Released")
+  {
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var listProdDate=[]
+    currentProducts.forEach(element => {
+      var time=new Date(element.released).getTime()
+      var now=new Date(date).getTime()
+      if(((now-time)/(1000 * 3600 * 24))<14)
+        listProdDate.push(element)
+    });
+    console.log(listProdDate)
+  fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
+    .then(setCurrentProducts)
+    .then(() => render(listProdDate, currentPagination));
+  }
+});
+
 
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
