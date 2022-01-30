@@ -14,6 +14,10 @@ const spanNbNewProducts =document.querySelector('#nbNewProducts');
 const selectBrand=document.querySelector('#brand-select');
 const selectFilter=document.querySelector('#filter-select');
 const selectSort=document.querySelector('#sort-select');
+const spanP50=document.querySelector('#P50');
+const spanP90=document.querySelector('#P90');
+const spanP95=document.querySelector('#P95');
+const spanLastReleasedDate=document.querySelector('#LastReleasedDate');
 
 /**
  * Set global value
@@ -133,9 +137,9 @@ const renderIndicators = pagination => {
 const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
-  renderIndicators(pagination);
   renderBrands(products);
   renderFilter(products);
+  renderIndicators(pagination);
 };
 
 const InfoPage=(products, pagination) => {
@@ -148,7 +152,14 @@ const InfoPage=(products, pagination) => {
     if(((now-time)/(1000 * 3600 * 24))<14)
       listProdDate.push(element)
   });
+
   spanNbNewProducts.innerHTML=listProdDate.length
+
+  var currentProd=products
+  var ProdSortByPriceAsc =currentProd.sort((a, b) => parseFloat(a.price) - parseFloat(b.price))
+  spanP50.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)/2)].price
+  spanP90.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)*0.90)].price
+  spanP95.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)*0.95)].price
 };
 
 
