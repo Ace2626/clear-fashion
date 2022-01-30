@@ -156,10 +156,12 @@ const InfoPage=(products, pagination) => {
   spanNbNewProducts.innerHTML=listProdDate.length
 
   var currentProd=products
-  var ProdSortByPriceAsc =currentProd.sort((a, b) => parseFloat(a.price) - parseFloat(b.price))
+  var ProdSortByPriceAsc =currentProd.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+  var ProdSortByDateDesc =currentProd.slice().sort((a, b) =>new Date(b.released).getTime()- new Date(a.released).getTime());
   spanP50.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)/2)].price
   spanP90.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)*0.90)].price
   spanP95.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)*0.95)].price
+  spanLastReleasedDate.innerHTML=ProdSortByDateDesc[0].released
 };
 
 
