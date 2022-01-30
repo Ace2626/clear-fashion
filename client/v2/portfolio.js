@@ -10,6 +10,7 @@ const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
+const spanNbNewProducts =document.querySelector('#nbNewProducts');
 const selectBrand=document.querySelector('#brand-select');
 const selectFilter=document.querySelector('#filter-select');
 const selectSort=document.querySelector('#sort-select');
@@ -123,8 +124,10 @@ const renderFilter=products=>{
  */
 const renderIndicators = pagination => {
   const {count} = pagination;
-
   spanNbProducts.innerHTML = count;
+  fetchProducts(currentPagination.currentPage,currentPagination.pageCount).then(setCurrentProducts).then(() => InfoPage(currentProducts, currentPagination));;
+
+ 
 };
 
 const render = (products, pagination) => {
@@ -133,6 +136,19 @@ const render = (products, pagination) => {
   renderIndicators(pagination);
   renderBrands(products);
   renderFilter(products);
+};
+
+const InfoPage=(products, pagination) => {
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var listProdDate=[]
+  products.forEach(element => {
+    var time=new Date(element.released).getTime()
+    var now=new Date(date).getTime()
+    if(((now-time)/(1000 * 3600 * 24))<14)
+      listProdDate.push(element)
+  });
+  spanNbNewProducts.innerHTML=listProdDate.length
 };
 
 
