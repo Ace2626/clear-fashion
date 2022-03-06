@@ -17,7 +17,7 @@ async function sandbox (eshop = 'https://adresse.paris/608-pulls-et-sweatshirts'
     console.log(products);  
     console.log('done');
     const data = JSON.stringify(products);
-    fs.writeFileSync('products.json', data, (err) => {
+    fs.appendFileSync('products.json', data, (err) => {
       console.log("a")
         if (err) {
             console.log(err)
