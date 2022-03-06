@@ -1,4 +1,5 @@
 const dedicatedbrand = require('./sources/adresseParisbrand');
+const fs = require('fs');
 
 async function sandbox (eshop = 'https://adresse.paris/608-pulls-et-sweatshirts') {
   try {
@@ -15,6 +16,16 @@ async function sandbox (eshop = 'https://adresse.paris/608-pulls-et-sweatshirts'
 
     console.log(products);  
     console.log('done');
+    const data = JSON.stringify(products);
+    fs.writeFileSync('products.json', data, (err) => {
+      console.log("a")
+        if (err) {
+            console.log(err)
+            throw err;
+            
+        }
+        console.log("JSON data is saved.");
+    });
     process.exit(0);
   } catch (e) {
     console.error(e);

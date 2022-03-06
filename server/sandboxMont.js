@@ -1,4 +1,4 @@
-const dedicatedbrand = require('./sources/montlimartbrand.js');
+const dedicatedbrand = require('./sources/montlimartbrand');
 
 async function sandbox (eshop = 'https://www.montlimart.com/pulls-sweats.html') {
   try {

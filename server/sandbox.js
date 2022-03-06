@@ -1,5 +1,6 @@
 /* eslint-disable no-console, no-process-exit */
 const dedicatedbrand = require('./sources/dedicatedbrand');
+const fs = require('fs');
 
 async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/t-shirts') {
   try {
@@ -35,11 +36,22 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/t-shirts'
     products=products.concat(await dedicatedbrand.scrape('https://www.dedicatedbrand.com/en/kids/bottoms'))
     products=products.concat(await dedicatedbrand.scrape('https://www.dedicatedbrand.com/en/kids/swimwear'))
 
-
+    
 
     console.log(products);  
     console.log('done');
+    const data = JSON.stringify(products);
+    fs.writeFileSync('products.json', data, (err) => {
+      console.log("a")
+        if (err) {
+            console.log(err)
+            throw err;
+            
+        }
+        console.log("JSON data is saved.");
+    });
     process.exit(0);
+   
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -49,3 +61,7 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/t-shirts'
 const [,, eshop] = process.argv;
 
 sandbox(eshop);
+
+
+
+
