@@ -1,4 +1,5 @@
 const dedicatedbrand = require('./sources/montlimartbrand');
+const fs = require('fs');
 
 async function sandbox (eshop = 'https://www.montlimart.com/pulls-sweats.html') {
   try {
@@ -19,4 +20,6 @@ async function sandbox (eshop = 'https://www.montlimart.com/pulls-sweats.html') 
 
 const [,, eshop] = process.argv;
 
-sandbox(eshop);
+//sandbox(eshop);
+const products = JSON.parse(fs.readFileSync('products.json'));
+console.log(products)
