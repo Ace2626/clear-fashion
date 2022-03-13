@@ -37,7 +37,9 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/t-shirts'
     products=products.concat(await dedicatedbrand.scrape('https://www.dedicatedbrand.com/en/kids/swimwear'))
 
     
-
+    products.forEach(element => {
+      element['brand']='Dedicated'
+    });
     console.log(products);  
     console.log('done');
     const data = JSON.stringify(products);

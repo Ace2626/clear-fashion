@@ -14,15 +14,34 @@ async function main() {
     const db = client.db(dbName);
     const products = JSON.parse(fs.readFileSync('products.json'));
     const collection = db.collection('products');
-    const result = collection.insertMany(products);
-    console.log(result);
-    const brand = 'loom';
-    const productsLoom = await collection.find({brand}).toArray();;
-  
-    console.log(productsLoom);
-}
+    //const result =await collection.insertMany(products);
+    //console.log(result);
+    //await brand(collection,'Dedicated');
+    //await maxPrice(collection,10);
+    await sortPrice(collection);
+    client.close();
+
+  }
 
 main()
   .then(console.log)
-  .catch(console.error)
-  .finally(() => client.close());
+  .catch(console.error);
+
+
+async function brand(collection,brand){
+  const prod = await collection.find({brand}).toArray();
+
+    console.log(prod);
+    
+  };
+
+async function maxPrice(collection,p){
+  const prod = await collection.find({price: { $lt: p } }).toArray();
+  console.log(prod);
+};
+
+async function sortPrice(collection){
+  const prod = await collection.find().sort({price:1});
+  console.log(prod);
+}
+  

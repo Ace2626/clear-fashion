@@ -13,7 +13,9 @@ async function sandbox (eshop = 'https://adresse.paris/608-pulls-et-sweatshirts'
     products=products.concat(await dedicatedbrand.scrape('https://adresse.paris/659-t-shirts-et-polos'))
     products=products.concat(await dedicatedbrand.scrape('https://adresse.paris/580-accessoires'))
 
-
+    products.forEach(element => {
+      element['brand']='AdresseParis'
+    });
     console.log(products);  
     console.log('done');
     const data = JSON.stringify(products);
