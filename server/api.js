@@ -5,20 +5,6 @@ const { MongoClient, ObjectId } = require('mongodb');
 const fs = require('fs');
 const { find } = require('domutils');
 
-async function main(){
-const MONGODB_URI = 'mongodb+srv://AntoineS:mStarWars911@cluster0.twud3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-const client = new MongoClient(MONGODB_URI);
-await client.connect();
-console.log('Connected successfully to server');
-const db = client.db('Cluster0');
-const collection = db.collection('products');
-result=await collection.find({}).toArray();
-console.log(result)
-return result;
-}
- //var result=main();
- //console.log(result)
-
 const PORT = 8092;
 
 const app = express();
@@ -67,14 +53,22 @@ app.get('/products/search', async(request, response) => {
     console.log('price')
     queryMG['price']={$lt:price};
   }
+  
+  console.log(queryMG)
+  res1=await collection.find(queryMG).toArray();
+
   if(isNaN(limit)==false){
     console.log('limit')
-    res=await collection.aggregate(queryMG).limit(limit);
+    res=[]
+    for(let i=0; i<limit;i++){
+      res.push(res1[i]);
+    }
+    res1=res;
   }
-  else{
-    console.log(queryMG)
-    res=await collection.find(queryMG).toArray();
-  }
+  res1.sort(
+    (first, second) => { return first['price'] - second['price'] }
+  );
+  res=res1
   console.log(queryMG)
   console.log(res.lenght);
   response.send(res);
