@@ -1,8 +1,9 @@
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const fs = require('fs');
+const { find } = require('domutils');
 
 async function main(){
 const MONGODB_URI = 'mongodb+srv://AntoineS:mStarWars911@cluster0.twud3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
@@ -15,8 +16,8 @@ result=await collection.find({}).toArray();
 console.log(result)
 return result;
 }
- var result=main();
- console.log(result)
+ //var result=main();
+ //console.log(result)
 
 const PORT = 8092;
 
@@ -35,30 +36,53 @@ app.get('/',(request,response)=>{
 })
 
 app.get('/products',async(req,res)=>{
+  const MONGODB_URI = 'mongodb+srv://AntoineS:mStarWars911@cluster0.twud3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
+  console.log('Connected successfully to server');
+  const db = client.db('Cluster0');
+  const collection = db.collection('products');
+  result=await collection.find({}).toArray();
   console.log(result.length);
   res.send(result);
 })
 
 app.get('/products/search', async(request, response) => {
+  const MONGODB_URI = 'mongodb+srv://AntoineS:mStarWars911@cluster0.twud3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
+  console.log('Connected successfully to server');
+  const db = client.db('Cluster0');
+  const collection = db.collection('products')
   var queryMG={};
-  const limit=parseInt(repuest.query.limit);
+  const limit=parseInt(request.query.limit);
   const brand=request.query.brand;
   const price=parseInt(request.query.price);
-  if(brand!==undefined){
+  console.log(limit,brand,price)
+  if(brand!=undefined){
+    console.log('brand')
     queryMG['brand']=brand; 
   }
-  if(price!==undefined){
+  if(isNaN(price)==false){
+    console.log('price')
     queryMG['price']={$lt:price};
   }
-  if(limit!==undefined){
-    result=await db.aggregate(queryMG).limit(limit);
+  if(isNaN(limit)==false){
+    console.log('limit')
+    res=await collection.aggregate(queryMG).limit(limit);
   }
   else{
-    result=await db.find(queryMG);
+    console.log(queryMG)
+    res=await collection.find(queryMG).toArray();
   }
-  console.log(result.lenght);
-  response.send(result);
-});
+  console.log(queryMG)
+  console.log(res.lenght);
+  response.send(res);
+})
+
+
+
+
 
 app.listen(PORT);
 
