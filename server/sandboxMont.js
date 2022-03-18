@@ -20,6 +20,4 @@ async function sandbox (eshop = 'https://www.montlimart.com/pulls-sweats.html') 
 
 const [,, eshop] = process.argv;
 
-//sandbox(eshop);
-const products = JSON.parse(fs.readFileSync('products.json'));
-console.log(products)
+sandbox(eshop);

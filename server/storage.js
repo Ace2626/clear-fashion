@@ -2,6 +2,7 @@ const { MongoClient } = require('mongodb');
 const fs = require('fs');
 
 
+
 const MONGODB_URI = 'mongodb+srv://AntoineS:mStarWars911@cluster0.twud3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const client = new MongoClient(MONGODB_URI);
 console.log(MONGODB_URI)
@@ -16,9 +17,9 @@ async function main() {
     const collection = db.collection('products');
     //const result =await collection.insertMany(products);
     //console.log(result);
-    //await brand(collection,'Dedicated');
+    await brand(collection,'Dedicated');
     //await maxPrice(collection,10);
-    await sortPrice(collection);
+    //await sortPrice(collection);
     client.close();
 
   }
