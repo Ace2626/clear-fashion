@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const { MongoClient, ObjectId } = require('mongodb');
 const fs = require('fs');
 const { find } = require('domutils');
+const { calculateLimitAndOffset, paginate } = require('paginate-info')
 
 const PORT = 8092;
 
@@ -17,8 +18,35 @@ app.use(helmet());
 
 app.options('*', cors());
 
-app.get('/',(request,response)=>{
-  response.send({'ack':true});
+
+
+
+
+
+app.get('/',async(request,response)=>{
+  const MONGODB_URI = 'mongodb+srv://AntoineS:mStarWars911@cluster0.twud3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
+  console.log('Connected successfully to server');
+  const db = client.db('Cluster0');
+  const collection = db.collection('products');
+  var page=parseInt(request.query.page);
+  var size=parseInt(request.query.size);
+  if(isNaN(page))
+    page==1;
+  if(isNaN(size))
+    size=12;
+  result=await collection.find({}).toArray();
+  const count = Object.keys(result).length;
+  const { limit, offset } = calculateLimitAndOffset(page, size);
+  const rows = await collection.find({})
+    .skip(offset)
+    .limit(limit).toArray();
+  const meta = paginate(page, count, rows, size);
+  //console.log(rows)
+  console.log(count)
+  response.send({'success':true,"data":{"result":rows,
+  "meta":meta}});
 })
 
 app.get('/products',async(req,res)=>{
@@ -73,6 +101,8 @@ app.get('/products/search', async(request, response) => {
   console.log(res.lenght);
   response.send(res);
 })
+
+module.exports=app;
 
 
 
