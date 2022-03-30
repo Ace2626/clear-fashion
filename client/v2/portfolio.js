@@ -39,7 +39,7 @@ const fetchProducts = async (page = 1, size = 12) => {
   try {
     const response = await fetch(
       //`https://clear-fashion-api.vercel.app/?page=${page}&size=${size}`
-      `https:/clear-fashion-bice.vercel.app/?page=${page}&size=${size}`
+       `https:/clear-fashion-bice.vercel.app/?page=${page}&size=${size}`
     );
     console.log(response)
     const body = await response.json();
@@ -118,7 +118,7 @@ const renderBrands=products=>{
 
 //Render Filter selector
 const renderFilter=products=>{
-  const options=[`<option value="${"Released"}">${"By reasonable released"}</option>`,`<option value="${"Price"}">${"By reasonable price"}</option>`];
+  const options=[`<option value="${"Price"}">${"By reasonable price"}</option>`,`<option value="${"T-shirt"}">${"Only T-shirt"}</option>`];
   selectFilter.innerHTML = options;
   selectFilter.selectedIndex=-1;
 }
@@ -156,7 +156,7 @@ const InfoPage=(products, pagination) => {
       listProdDate.push(element)
   });
 
-  spanNbNewProducts.innerHTML=listProdDate.length
+  //spanNbNewProducts.innerHTML=listProdDate.length
 
   var currentProd=products
   var ProdSortByPriceAsc =currentProd.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
@@ -164,7 +164,7 @@ const InfoPage=(products, pagination) => {
   spanP50.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)/2)].price
   spanP90.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)*0.90)].price
   spanP95.innerHTML=ProdSortByPriceAsc[Math.round((ProdSortByPriceAsc.length)*0.95)].price
-  spanLastReleasedDate.innerHTML=ProdSortByDateDesc[0].released
+  //spanLastReleasedDate.innerHTML=ProdSortByDateDesc[0].released
 };
 
 
@@ -201,6 +201,7 @@ selectBrand.addEventListener('change', event => {
 });
 
 selectFilter.addEventListener('change', event => {
+  /*
   if(event.target.value=="Released")
   {
     var today = new Date();
@@ -216,6 +217,7 @@ selectFilter.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => render(listProdDate, currentPagination));
   }
+  */
   if(event.target.value=="Price")
   {
     var listProdPrice=[]
@@ -226,6 +228,19 @@ selectFilter.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
     .then(setCurrentProducts)
     .then(() => render(listProdPrice, currentPagination));
+  }
+  else{
+    console.log(event.target.value)
+    var listProdElem=[];
+    currentProducts.forEach(element => {
+      if(element.name.includes(event.target.value))
+        listProdElem.push(element)
+    });
+    console.log("TSHIRT")
+    console.log(listProdElem)
+    fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
+    .then(setCurrentProducts)
+    .then(() => render(listProdElem, currentPagination));
   }
 }); 
 
