@@ -119,7 +119,7 @@ const renderBrands=products=>{
 
 //Render Filter selector
 const renderFilter=products=>{
-  const options=[`<option value="${"Price"}">${"By reasonable price"}</option>`,`<option value="${"T-shirt"}">${"Only T-shirt"}</option>`];
+  const options=[`<option value="${"Price"}">${"By reasonable price"}</option>` ];
   selectFilter.innerHTML = options;
   selectFilter.selectedIndex=-1;
 }
@@ -182,6 +182,7 @@ selectShow.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
+    console.log(currentProducts)
 });
 
 selectPage.addEventListener('change', event => {
@@ -219,6 +220,7 @@ selectFilter.addEventListener('change', event => {
     .then(() => render(listProdDate, currentPagination));
   }
   */
+  console.log(currentProducts);
   if(event.target.value=="Price")
   {
     var listProdPrice=[]
@@ -230,6 +232,7 @@ selectFilter.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => render(listProdPrice, currentPagination));
   }
+  
   else{
     console.log(event.target.value)
     var listProdElem=[];
@@ -237,7 +240,6 @@ selectFilter.addEventListener('change', event => {
       if(element.name.includes(event.target.value))
         listProdElem.push(element)
     });
-    console.log("TSHIRT")
     console.log(listProdElem)
     fetchProducts(currentPagination.currentPage,currentPagination.pageCount)
     .then(setCurrentProducts)
